@@ -10,7 +10,6 @@ namespace MVC_Forum.Controllers
         private readonly ILogger<HomeController> _logger;
         public const string SessionKeyName = "_Name";
         public const string SessionKeyAdmin = "_IsAdmin";
-        public static User CurrentUser { get; set; } = null;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -24,7 +23,7 @@ namespace MVC_Forum.Controllers
             }
             return View();
         }
-        [Route("Login")]
+        [Route("Login/{username}")]
         [HttpPost]
         public IActionResult Login(string username)
         {
@@ -35,7 +34,6 @@ namespace MVC_Forum.Controllers
                     var found = UserController.Users.Single(user => user.Name == username);
                     if (found != null)
                     {
-                        CurrentUser = found;
                         HttpContext.Session.SetString("_Name", username);
                         HttpContext.Session.SetString("_IsAdmin", found.IsAdmin.ToString());
                         return RedirectToAction("Index");
@@ -59,7 +57,6 @@ namespace MVC_Forum.Controllers
         {
             HttpContext.Session.Remove("_Name");
             HttpContext.Session.Remove("_IsAdmin");
-            CurrentUser = null;
             return RedirectToAction("Index");
         }
 
