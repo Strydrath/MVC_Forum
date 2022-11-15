@@ -17,6 +17,13 @@
             Created=created;
             Friends = new List<User>();
         }
+        public User(string name, bool isAdmin, DateTime created, List<User> friends)
+        {
+            Name = name;
+            IsAdmin = isAdmin;
+            Created = created;
+            Friends = friends;
+        }
         public string Name { get; set; }
         public bool IsAdmin { get; set; }
 

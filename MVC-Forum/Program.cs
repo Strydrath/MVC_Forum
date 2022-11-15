@@ -1,7 +1,16 @@
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddLocalization();
+builder.Services.AddMvc()
+    .AddDataAnnotationsLocalization()
+    .AddViewLocalization(options
+        => options.ResourcesPath = "resources");
+
 builder.Services.AddSession(options => { options.Cookie.HttpOnly = true; });
 builder.Services.Configure<CookiePolicyOptions>(
     options => {
@@ -27,6 +36,18 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
+var cultures = new[] { new
+        CultureInfo("pl-PL"),new
+        CultureInfo("en-US")
+};
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("pl-PL"),
+    FallBackToParentUICultures = true,
+    FallBackToParentCultures = true,
+    SupportedCultures = cultures,
+    SupportedUICultures = cultures
+});
 
 app.MapControllerRoute(
     name: "default",
@@ -36,5 +57,10 @@ app.MapControllerRoute(
     name: "trasa",
     pattern: "User/{action}",
     defaults: new { controller = "UserController"});
+
+app.MapControllerRoute(
+    name: "login",
+    pattern: "Login/{name}",
+    defaults: new { controller = "HomeController", action="Login" });
 
 app.Run();
