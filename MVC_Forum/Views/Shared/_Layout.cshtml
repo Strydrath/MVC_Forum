@@ -26,39 +26,37 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona Domowa</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@HtmlLocalizer["Home Page"]</a>
                     </li>
                     @if (HttpContextAccessor.HttpContext.Session.GetString("_IsAdmin") != null)
                     {
                         @if (bool.Parse(HttpContextAccessor.HttpContext.Session.GetString("_IsAdmin")))
                         {
                             <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">@HtmlLocalizer["Użytkownicy"]</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">@HtmlLocalizer["Users"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Init">Inicjalizacja</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Init">@HtmlLocalizer["Init"]</a>
                             </li>
 
                         }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Friends" asp-action="List">Przyjaciele</a>
-                            </li>
 
-                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Wyloguj</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Friends" asp-action="List">@HtmlLocalizer["Friends"]</a>
+                        </li>
+
+                        <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">@HtmlLocalizer["Logout"]</a>
                         </li>
                     }
                     else
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Zaloguj</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">@HtmlLocalizer["LogIn"]</a>
                         </li>
                     }
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ChangeLanguage">Zmien Jezyk</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ChangeLanguage">@HtmlLocalizer["Change Language"]</a>
                     </li>
                 </ul>
             </div>

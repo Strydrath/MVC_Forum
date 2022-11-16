@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Session;
+using Microsoft.Extensions.Localization;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 using MVC_Forum.Models;
 using System.Diagnostics;
 using System.Globalization;
@@ -11,20 +13,22 @@ namespace MVC_Forum.Controllers
         private readonly ILogger<HomeController> _logger;
         public const string SessionKeyName = "_Name";
         public const string SessionKeyAdmin = "_IsAdmin";
-        private static string _culture = "";
-        public HomeController(ILogger<HomeController> logger)
+        private static string language = "";
+
+        private IStringLocalizer<HomeController> _localizer;
+        public HomeController(ILogger<HomeController> logger, IStringLocalizer<HomeController> localizer)
         {
             _logger = logger;
-
             setCulture();
         }
+
         private static void setCulture()
         {
-            if (_culture == "")
+            if (language == "")
             {
-                _culture = "pl-PL";
+                language = "en-US";
             }
-            CultureInfo ci = CultureInfo.GetCultureInfo(_culture);
+            CultureInfo ci = CultureInfo.GetCultureInfo(language);
 
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
@@ -32,22 +36,22 @@ namespace MVC_Forum.Controllers
 
         public IActionResult ChangeLanguage()
         {
-            if (_culture == "pl-PL")
+            if (language == "pl-PL")
             {
-                _culture = "en-US";
+                language = "en-US";
             }
             else
             {
-                _culture = "pl-PL";
+                language = "pl-PL";
             }
-            CultureInfo ci = CultureInfo.GetCultureInfo(_culture);
+            CultureInfo ci = CultureInfo.GetCultureInfo(language);
 
 
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
             return View("Index");
         }
-        
+
         public IActionResult Index()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
@@ -56,7 +60,12 @@ namespace MVC_Forum.Controllers
             }
             return View();
         }
-
+        [Route("Login")]
+        [HttpGet]
+        public IActionResult LoginForm()
+        {
+            return View("Login");
+        }
         [Route("Login/{username}")]
         [HttpGet]
         public IActionResult LoginTest(string username)
@@ -122,7 +131,7 @@ namespace MVC_Forum.Controllers
             return RedirectToAction("Index");
         }
 
-        [Route("/HandleError/{code:int}")]
+        [Route("Home/HandleError/{code:int}")]
         public IActionResult HandleError(int code)
         {
             ViewData["ErrorMessage"] = $"Error occurred. The ErrorCode is: {code}";

@@ -68,6 +68,11 @@ namespace MVC_Forum.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
+
+            foreach (var user in Users)
+            {
+                user.Friends.RemoveAll(friend => friend.Name == name);
+            }
             Users.RemoveAll(user => user.Name == name);
             return RedirectToAction(nameof(Index));
         }
